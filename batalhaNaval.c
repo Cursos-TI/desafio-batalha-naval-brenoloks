@@ -35,6 +35,63 @@ int main() {
     // 0 0 1 0 0
     // 1 1 1 1 1
     // 0 0 1 0 0
+    int tamanhoTabuleiro = 5;
+    int tamanhoNavio = 3;
+    int tabuleiro[5][5];
+    int navioHorizontal[3] = {3, 3, 3};
+    int navioVertical[3] = {3, 3, 3};
+
+    // Inicializa tabuleiro com 0 (água)
+    for (int i = 0; i < tamanhoTabuleiro; i++) {
+        for (int j = 0; j < tamanhoTabuleiro; j++) {
+            tabuleiro[i][j] = 0;
+        }
+    }
+
+    // Coordenadas iniciais dos navios
+    int linhaHorizontal = 1, colunaHorizontal = 2;
+    int linhaVertical = 2, colunaVertical = 0;
+
+    // Verifica se cabem no tabuleiro
+    if (colunaHorizontal + tamanhoNavio <= tamanhoTabuleiro &&
+        linhaVertical + tamanhoNavio <= tamanhoTabuleiro) {
+
+        // Verifica se não há sobreposição
+        int sobrepoe = 0;
+        for (int i = 0; i < tamanhoNavio; i++) {
+            if (tabuleiro[linhaHorizontal][colunaHorizontal + i] != 0 ||
+                tabuleiro[linhaVertical + i][colunaVertical] != 0) {
+                sobrepoe = 1;
+                break;
+            }
+        }
+
+        if (sobrepoe == 0) {
+            // Posiciona navio horizontal
+            for (int i = 0; i < tamanhoNavio; i++) {
+                tabuleiro[linhaHorizontal][colunaHorizontal + i] = navioHorizontal[i];
+            }
+            // Posiciona navio vertical
+            for (int i = 0; i < tamanhoNavio; i++) {
+                tabuleiro[linhaVertical + i][colunaVertical] = navioVertical[i];
+            }
+        } else {
+            printf("Erro: os navios se sobrepoem!\n");
+            return 1;
+        }
+    } else {
+        printf("Erro: coordenadas invalidas!\n");
+        return 1;
+    }
+
+    // Exibe o tabuleiro
+    printf("Tabuleiro de Batalha Naval:\n");
+    for (int i = 0; i < tamanhoTabuleiro; i++) {
+        for (int j = 0; j < tamanhoTabuleiro; j++) {
+            printf("%d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
 
     return 0;
 }
