@@ -35,7 +35,8 @@ int main() {
     // 0 0 1 0 0
     // 1 1 1 1 1
     // 0 0 1 0 0
-    int tamanhoTabuleiro = 5;
+
+   int tamanhoTabuleiro = 5;
     int tamanhoNavio = 3;
     int tabuleiro[5][5];
     int navioHorizontal[3] = {3, 3, 3};
