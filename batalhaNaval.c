@@ -36,56 +36,68 @@ int main() {
     // 1 1 1 1 1
     // 0 0 1 0 0
 
-   int tamanhoTabuleiro = 5;
+  int tamanhoTabuleiro = 10;
     int tamanhoNavio = 3;
-    int tabuleiro[5][5];
-    int navioHorizontal[3] = {3, 3, 3};
-    int navioVertical[3] = {3, 3, 3};
+    int tabuleiro[10][10];
+    int navio[3] = {3, 3, 3}; // Todos os navios iguais (3 representa parte do navio)
 
-    // Inicializa tabuleiro com 0 (água)
+    // 1️⃣ Inicializa tabuleiro com água (0)
     for (int i = 0; i < tamanhoTabuleiro; i++) {
         for (int j = 0; j < tamanhoTabuleiro; j++) {
             tabuleiro[i][j] = 0;
         }
     }
 
-    // Coordenadas iniciais dos navios
-    int linhaHorizontal = 1, colunaHorizontal = 2;
-    int linhaVertical = 2, colunaVertical = 0;
-
-    // Verifica se cabem no tabuleiro
-    if (colunaHorizontal + tamanhoNavio <= tamanhoTabuleiro &&
-        linhaVertical + tamanhoNavio <= tamanhoTabuleiro) {
-
-        // Verifica se não há sobreposição
-        int sobrepoe = 0;
+    // Função simples para verificar se cabe e não sobrepõe
+    int podePosicionar(int linha, int coluna, int direcaoLinha, int direcaoColuna) {
         for (int i = 0; i < tamanhoNavio; i++) {
-            if (tabuleiro[linhaHorizontal][colunaHorizontal + i] != 0 ||
-                tabuleiro[linhaVertical + i][colunaVertical] != 0) {
-                sobrepoe = 1;
-                break;
-            }
-        }
+            int novaLinha = linha + i * direcaoLinha;
+            int novaColuna = coluna + i * direcaoColuna;
 
-        if (sobrepoe == 0) {
-            // Posiciona navio horizontal
-            for (int i = 0; i < tamanhoNavio; i++) {
-                tabuleiro[linhaHorizontal][colunaHorizontal + i] = navioHorizontal[i];
+            // Fora dos limites
+            if (novaLinha < 0 || novaLinha >= tamanhoTabuleiro ||
+                novaColuna < 0 || novaColuna >= tamanhoTabuleiro) {
+                return 0;
             }
-            // Posiciona navio vertical
-            for (int i = 0; i < tamanhoNavio; i++) {
-                tabuleiro[linhaVertical + i][colunaVertical] = navioVertical[i];
+            // Já tem navio
+            if (tabuleiro[novaLinha][novaColuna] != 0) {
+                return 0;
             }
-        } else {
-            printf("Erro: os navios se sobrepoem!\n");
-            return 1;
         }
-    } else {
-        printf("Erro: coordenadas invalidas!\n");
         return 1;
     }
 
-    // Exibe o tabuleiro
+    // Função para posicionar navio
+    void posicionar(int linha, int coluna, int direcaoLinha, int direcaoColuna) {
+        for (int i = 0; i < tamanhoNavio; i++) {
+            int novaLinha = linha + i * direcaoLinha;
+            int novaColuna = coluna + i * direcaoColuna;
+            tabuleiro[novaLinha][novaColuna] = 3;
+        }
+    }
+
+    // 2️⃣ Definir coordenadas e direções
+    // Horizontal (direção 0,1)
+    if (podePosicionar(2, 4, 0, 1)) {
+        posicionar(2, 4, 0, 1);
+    }
+
+    // Vertical (direção 1,0)
+    if (podePosicionar(5, 1, 1, 0)) {
+        posicionar(5, 1, 1, 0);
+    }
+
+    // Diagonal ↘ (direção 1,1)
+    if (podePosicionar(0, 0, 1, 1)) {
+        posicionar(0, 0, 1, 1);
+    }
+
+    // Diagonal ↙ (direção 1,-1)
+    if (podePosicionar(0, 9, 1, -1)) {
+        posicionar(0, 9, 1, -1);
+    }
+
+    // 3️⃣ Exibir o tabuleiro
     printf("Tabuleiro de Batalha Naval:\n");
     for (int i = 0; i < tamanhoTabuleiro; i++) {
         for (int j = 0; j < tamanhoTabuleiro; j++) {
